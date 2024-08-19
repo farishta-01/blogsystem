@@ -94,7 +94,7 @@
                         <li class="nav-item px-1">
                             <!-- Link--><a class="nav-link" href="{{ route('listing.page') }}">Listing</a>
                         </li>
-
+                        {{-- {{ dd(auth()->check()) }} --}}
                         @if (auth()->check())
                             <li class="nav-item px-1 dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" href="#"

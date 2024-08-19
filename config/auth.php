@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\User;
+
 return [
 
     /*
@@ -14,7 +16,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'web', // Change the default guard to 'web'
         'passwords' => 'users',
     ],
 
@@ -31,7 +33,7 @@ return [
     | users are actually retrieved out of your database or other storage
     | mechanisms used by this application to persist your user's data.
     |
-    | Supported: "session"
+    | Supported: "session", "token"
     |
     */
 
@@ -40,9 +42,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'client' => [
-            'driver' => 'session',
-            'provider' => 'clients',
+
+        'api' => [
+            'driver' => 'jwt', // Change the driver to 'jwt' for API routes
+            'provider' => 'users',
+            'hash' => false, // Set this to false to bypass Laravel's hash checking
         ],
     ],
 
@@ -66,24 +70,9 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
-
-
-
-        'clients' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Client::class,
+            'model' => User::class,
         ],
     ],
-
-
-
-    // 'users' => [
-    //     'driver' => 'database',
-    //     'table' => 'users',
-    // ],
-
 
     /*
     |--------------------------------------------------------------------------
@@ -94,7 +83,7 @@ return [
     | than one user table or model in the application and you want to have
     | separate password reset settings based on the specific user types.
     |
-    | The expire time is the number of minutes that each reset token will be
+    | The expiry time is the number of minutes that each reset token will be
     | considered valid. This security feature keeps tokens short-lived so
     | they have less time to be guessed. You may change this as needed.
     |

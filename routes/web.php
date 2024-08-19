@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthorizePaymentController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PaymentController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -16,6 +19,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('all_posts', [PostController::class, 'post'])->name('post.admin');
     Route::get('/logout_admin', [AdminController::class, 'logout'])->name('logout.admin');
 });
+
 Route::get('category', [CategoryController::class, 'category'])->name('show.modal');
 
 Route::post('/savedata', [PostController::class, 'savedata'])->name('savedata');
@@ -44,3 +48,10 @@ Route::get('/loginClient', [ClientController::class, 'login'])->name('loginClien
 Route::post('/registeration_Client', [ClientController::class, 'registeration'])->name('register.client');
 Route::post('/login_Client', [ClientController::class, 'loginpost'])->name('login.client');
 Route::get('/logout_Client', [ClientController::class, 'logout'])->name('logout.client');
+
+Route::controller(PaymentController::class)->group(function () {
+    Route::get('/payment', 'index');
+    Route::post('/payment-process', 'payment')->name('stripe.post');
+});
+Route::get('/pay', [AuthorizePaymentController::class, 'pay'])->name('pay');
+Route::post('/dopay/online', [AuthorizePaymentController::class, 'handleonlinePay'])->name('dopay.online');

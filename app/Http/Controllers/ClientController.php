@@ -22,6 +22,9 @@ class ClientController extends Controller
 
     public function loginpost(Request $req)
     {
+        // Uncomment for debugging
+        // dd(123);
+        dd($req);
         if ($req->ajax()) {
             $req->validate([
                 'username' => 'required|regex:/^[a-zA-Z0-9_]+$/',
@@ -33,9 +36,9 @@ class ClientController extends Controller
                 $user = Auth::user();
 
                 if ($user->role === 'author') {
-                    return response()->json(['success' => 'Logged in successfully as admin', 'role' => 'author']);
+                    return response()->json(['success' => 'Logged in successfully as author', 'role' => 'author']);
                 } else {
-                    return response()->json(['error' => 'You do not have permission to access the admin panel.']);
+                    return response()->json(['error' => 'You do not have permission to access the admin panel.'], 401);
                 }
             } else {
                 return response()->json(['error' => 'Invalid credentials.'], 401);
@@ -55,6 +58,7 @@ class ClientController extends Controller
 
     public function registeration(Request $req)
     {
+        // dd($req->all());
         $validator = Validator::make($req->all(), [
             'f_name' => 'required',
             'l_name' => 'required',
@@ -71,11 +75,10 @@ class ClientController extends Controller
         $user->f_name = $req->f_name;
         $user->l_name = $req->l_name;
         $user->email = $req->email;
-        $user->username = $req->username; // Use the provided username, not email
+        $user->username = $req->username;
         $user->password = Hash::make($req->password);
 
         if ($user->save()) {
-            // Attempt to log in the user
             $credentials = $req->only('username', 'password');
             if (Auth::attempt($credentials)) {
                 $user = Auth::user();
@@ -92,14 +95,4 @@ class ClientController extends Controller
             return response()->json(['error' => 'Failed to register user'], 500);
         }
     }
-
-
 }
-
-
-
-
-
-
-
-

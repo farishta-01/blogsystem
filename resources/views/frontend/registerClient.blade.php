@@ -5,49 +5,7 @@
 
 
     </head>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
-    <script>
-        $(document).ready(function() {
-            $('.alert').delay(5000).slideUp(300);
-            $('#submitform').on('submit', function(e) {
-                e.preventDefault();
-                var formData = new FormData(this);
-
-                $.ajax({
-                    url: "/registeration_Client",
-                    type: "POST",
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            toastr.success(response.success);
-                            $('#submitform')[0].reset();
-                            window.location.href = "{{ route('home') }}";
-                        } else {
-                            toastr.error(response.error);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                        var errorMessage = "An error occurred while processing your request.";
-                        if (xhr.status === 422) {
-                            var errors = xhr.responseJSON;
-                            if (errors && errors.error) {
-                                errorMessage = errors.error;
-                            }
-                        }
-                        toastr.error(errorMessage);
-                    }
-                });
-            });
-        });
-    </script>
 
     <body class="bg-primary">
         <div id="layoutAuthentication">
@@ -140,6 +98,10 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
         </script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
         <script>
             window.addEventListener('DOMContentLoaded', event => {
 
@@ -157,10 +119,47 @@
                             'sb-sidenav-toggled'));
                     });
                 }
+                $(document).ready(function() {
+                    $('.alert').delay(5000).slideUp(300);
+                    $('#submitform').on('submit', function(e) {
+                        e.preventDefault();
+                        var formData = new FormData(this);
 
+                        $.ajax({
+                            url: "/registeration_Client",
+                            type: "POST",
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    toastr.success(response.success);
+                                    $('#submitform')[0].reset();
+                                    window.location.href = "{{ route('home') }}";
+                                } else {
+                                    toastr.error(response.error);
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error(xhr.responseText);
+                                var errorMessage =
+                                    "An error occurred while processing your request.";
+                                if (xhr.status === 422) {
+                                    var errors = xhr.responseJSON;
+                                    if (errors && errors.error) {
+                                        errorMessage = errors.error;
+                                    }
+                                }
+                                toastr.error(errorMessage);
+                            }
+                        });
+                    });
+                });
             });
         </script>
-
 
     </body>
 

@@ -20,7 +20,7 @@
 
 
 
-    <style>
+    {{-- <style>
         /* Custom CSS to override toastr styles */
         .toast-success {
             background-color: #28a745 !important;
@@ -29,7 +29,7 @@
         .toast-error {
             background-color: #dc3545 !important;
         }
-    </style>
+    </style> --}}
 
 </head>
 
