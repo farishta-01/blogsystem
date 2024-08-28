@@ -54,7 +54,10 @@ class PostController extends Controller
 
         $tbl->save();
 
-        return response()->json(['success' => 'Changes are successful']);
+        return response()->json([
+            'success' => 'Changes are successful',
+            'code' => 202
+        ], 202);
     }
 
     public function editdata(Request $request)

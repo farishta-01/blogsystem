@@ -36,7 +36,7 @@ class ClientController extends Controller
                 $user = Auth::user();
 
                 if ($user->role === 'author') {
-                    return response()->json(['success' => 'Logged in successfully as author', 'role' => 'author']);
+                    return response()->json(['success' => 'Logged in successfully as author', 'code' => 202, 'role' => 'author']202);
                 } else {
                     return response()->json(['error' => 'You do not have permission to access the admin panel.'], 401);
                 }
