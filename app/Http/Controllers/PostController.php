@@ -32,13 +32,14 @@ class PostController extends Controller
 
         if ($req->hasFile('photo')) {
             $req->validate([
-                'photo' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             // If there's a new photo, upload it
             $photoPath = $req->file('photo')->store('photos');
             $tbl->photo = $photoPath;
         }
+
 
         // If no new photo is uploaded and there's an old photo,
         // keep the old photo
